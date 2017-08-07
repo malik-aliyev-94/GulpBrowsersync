@@ -4,5 +4,9 @@
   "main": "index.js",
   "repository": "https://github.com/malik-aliyev-94/GulpBrowsersync.git",
   "author": "Malik Aliyev",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "browser-sync": "^2.18.13",
+    "gulp": "^3.9.1"
+  }
 }
