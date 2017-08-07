@@ -7,6 +7,10 @@
   "license": "MIT",
   "devDependencies": {
     "browser-sync": "^2.18.13",
-    "gulp": "^3.9.1"
+    "gulp": "^3.9.1",
+    "gulp-pug": "^3.3.0"
+  },
+  "dependencies": {
+    "pug": "^2.0.0-rc.3"
   }
 }
