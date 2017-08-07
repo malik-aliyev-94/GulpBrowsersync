@@ -5,6 +5,17 @@ var stylus = require('gulp-stylus');
 var ts = require('gulp-typescript');
 var clean = require('gulp-clean');
 
+var conf = require('./config.js');
+
+var paths = {
+    scripts: "",
+    styles: "",
+    images: "",
+    fonts: "",
+    documents: "",
+    extras: ""
+};
+
 // Static server
 gulp.task('browser-sync', function(){
     browserSync.init({
@@ -83,5 +94,6 @@ gulp.task('fonts', function(){
 });
 
 gulp.task('default', function(){
-    console.log('Default task is running !');
+    console.log('Default task is running with config:');
+    console.log(conf);
 });
