@@ -1,0 +1,11 @@
+body {
+  background: #333;
+  color: #fff;
+  padding: 50px;
+  text-align: justify;
+}
+body hr {
+  border: none;
+  height: 2px;
+  background: #ff0;
+}

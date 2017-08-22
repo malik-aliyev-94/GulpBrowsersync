@@ -1,3 +1,4 @@
+var fs = require('fs');
 var gulp = require('gulp');
 var browserSync = require('browser-sync').create();
 var pug = require('gulp-pug');
@@ -5,22 +6,51 @@ var stylus = require('gulp-stylus');
 var ts = require('gulp-typescript');
 var clean = require('gulp-clean');
 
-var conf = require('./config.js');
+var config = {};
+if (fs.existsSync('./config.js')) {
+    config = require('./config.js')
+}
 
-var paths = {
-    scripts: "",
-    styles: "",
-    images: "",
-    fonts: "",
-    documents: "",
-    extras: ""
+var defaults = {
+    env: "dev",
+    enableTS: false,
+    paths: {
+        src: "./src",
+        dist: "./dist",
+        scripts: {
+            src: "scripts",
+            dist: "scripts"
+        },
+        styles: {
+            src: "styles",
+            dist: "styles"
+        },
+        images: {
+            src: "images",
+            dist: "images"
+        },
+        fonts: {
+            src: "fonts",
+            dist: "fonts"
+        },
+        documents: {
+            src: "documents",
+            dist: "documents"
+        },
+        extras: {
+            src: "extras",
+            dist: "extras"
+        }
+    }
 };
 
+var conf = Object.assign({}, defaults, config);
+
 // Static server
-gulp.task('browser-sync', function(){
+gulp.task('browserSync', function(){
     browserSync.init({
         server: {
-            baseDir: "./"
+            baseDir: "./dist"
         }
     });
 });
@@ -31,14 +61,16 @@ gulp.task('pug', function(){
     .pipe(pug({
 
     }))
-    .pipe(gulp.dest('./dist'));
+    .pipe(gulp.dest('./dist'))
+    .pipe(browserSync.stream());
 });
 
 // Compile Styl files
 gulp.task('stylus', function(){
     return gulp.src('./src/styles/**/*.styl')
     .pipe(stylus())
-    .pipe(gulp.dest('./dist/styles'));
+    .pipe(gulp.dest('./dist/styles'))
+    .pipe(browserSync.stream());
 });
 
 // Compile TS files
@@ -54,7 +86,8 @@ gulp.task('ts', function(){
 // Compile JS files
 gulp.task('js', function(){
     return gulp.src('./src/scripts/**/*.js')
-    .pipe(gulp.dest('./dist/scripts'));
+    .pipe(gulp.dest('./dist/scripts'))
+    .pipe(browserSync.stream());
 });
 
 // Clean task
@@ -93,7 +126,16 @@ gulp.task('fonts', function(){
     .pipe(gulp.dest('./dist/fonts'));
 });
 
-gulp.task('default', function(){
-    console.log('Default task is running with config:');
-    console.log(conf);
+// gulp.task('watch', ['clean', 'pug', 'stylus', 'js', 'browserSync'], function (){
+gulp.task('watch', ['pug', 'stylus', 'js', 'browserSync'], function (){
+    gulp.watch('./src/**/*.pug', ['pug']);
+    gulp.watch('./src/**/*.styl', ['stylus']);
+    gulp.watch('./src/**/*.js', ['js']);
+    // gulp.watch('./dist/**/*.html').on('change', browserSync.reload);
+});
+
+gulp.task('default', ['watch'], function(){
+    // console.log('Default task is running with config:');
+    // console.log(conf);
+    // console.log(conf);
 });
